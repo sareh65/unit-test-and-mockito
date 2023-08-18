@@ -3,6 +3,7 @@ package br.com.snn.apitest.services.impl;
 import br.com.snn.apitest.domain.User;
 import br.com.snn.apitest.repository.UserRepository;
 import br.com.snn.apitest.services.UserService;
+import br.com.snn.apitest.services.exception.ObjectNotFoundExeption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Integer id) {
         Optional<User> obj = repository.findById(id);
-        return obj.orElse(null);
+        return obj.orElseThrow(() -> new ObjectNotFoundExeption("not found!"));
     }
 }
