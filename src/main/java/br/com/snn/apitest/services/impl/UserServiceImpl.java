@@ -4,6 +4,7 @@ import br.com.snn.apitest.domain.User;
 import br.com.snn.apitest.domain.dto.UserDTO;
 import br.com.snn.apitest.repository.UserRepository;
 import br.com.snn.apitest.services.UserService;
+import br.com.snn.apitest.services.exception.DataIntegrityViolationException;
 import br.com.snn.apitest.services.exception.ObjectNotFoundExeption;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserDTO obj) {
+        findByEmail(obj);
         return repository.save(mapper.map(obj,User.class));
+    }
+    private void findByEmail(UserDTO obj){
+        Optional<User> user = repository.findByEmail(obj.getEmail());
+        if (user.isPresent()){
+            throw new DataIntegrityViolationException("This email is registred!");
+        }
+
     }
 }
