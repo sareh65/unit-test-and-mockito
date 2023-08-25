@@ -1,4 +1,4 @@
-package br.com.snn.apitest.resource.exception;
+package br.com.snn.apitest.resources.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

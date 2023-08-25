@@ -1,4 +1,4 @@
-package br.com.snn.apitest.resource.exception;
+package br.com.snn.apitest.resources.exception;
 
 import br.com.snn.apitest.services.exception.ObjectNotFoundExeption;
 import jakarta.servlet.http.HttpServletRequest;
