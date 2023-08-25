@@ -6,8 +6,9 @@ import br.com.snn.apitest.domain.dto.UserDTO;
 import java.util.List;
 
 public interface UserService {
-    public User findById(Integer id);
-    public List<User> findAll();
-    public User create(UserDTO obj);
-    public User update(UserDTO obj);
+    User findById(Integer id);
+    List<User> findAll();
+    User create(UserDTO obj);
+    User update(UserDTO obj);
+    void delete(Integer id);
 }
