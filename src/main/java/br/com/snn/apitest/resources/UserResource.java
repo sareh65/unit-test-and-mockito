@@ -35,7 +35,11 @@ return ResponseEntity.ok().body(mapper.map(userService.findById(id),UserDTO.clas
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(userObj.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
-
+    }
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<UserDTO>update(@PathVariable Integer id,@RequestBody UserDTO obj){
+        obj.setId(id);
+        return ResponseEntity.ok().body(mapper.map(userService.update(obj),UserDTO.class));
     }
 
 }
