@@ -3,6 +3,7 @@ package br.com.snn.apitest.services.impl;
 import br.com.snn.apitest.domain.User;
 import br.com.snn.apitest.domain.dto.UserDTO;
 import br.com.snn.apitest.repository.UserRepository;
+import br.com.snn.apitest.services.exception.DataIntegrityViolationException;
 import br.com.snn.apitest.services.exception.ObjectNotFoundExeption;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -104,6 +105,19 @@ class UserServiceImplTest {
         assertEquals(ID,response.getId());
         assertEquals(NAME,response.getName());
         assertEquals(WEIGHT,response.getWeight());
+
+    }
+    @Test
+    void whenCreateException() {
+        when(repository.findByEmail(anyString())).thenReturn(userOptional);
+
+        try{
+            userOptional.get().setId(2);
+            service.create(userDTO);
+        }catch (Exception ex){
+           assertEquals(DataIntegrityViolationException.class,ex.getClass());
+           assertEquals("This email is registred!",ex.getMessage());
+        }
 
     }
 
