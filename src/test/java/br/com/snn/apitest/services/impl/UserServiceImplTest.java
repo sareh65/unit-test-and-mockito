@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,6 +28,7 @@ class UserServiceImplTest {
     public static final double WEIGHT = 12.00;
     public static final String PASSWORD = "1200";
     public static final String NOT_FOUND = "not found!";
+    public static final int INDEX = 0;
     @InjectMocks
     private UserServiceImpl service;
     @Mock
@@ -77,6 +79,17 @@ class UserServiceImplTest {
 
     @Test
     void findAll() {
+        when(repository.findAll()).thenReturn(List.of(user));
+
+        List<User> response = service.findAll();
+
+        assertNotNull(response);
+        assertEquals(response.get(INDEX).getClass(), User.class);
+        assertEquals(1,response.size());
+        assertEquals(ID,response.get(INDEX).getId());
+        assertEquals(EMAIL,response.get(INDEX).getEmail());
+        assertEquals(NAME,response.get(INDEX).getName());
+        assertEquals(WEIGHT,response.get(INDEX).getWeight());
 
     }
 
