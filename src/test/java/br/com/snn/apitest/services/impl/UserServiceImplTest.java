@@ -3,6 +3,7 @@ package br.com.snn.apitest.services.impl;
 import br.com.snn.apitest.domain.User;
 import br.com.snn.apitest.domain.dto.UserDTO;
 import br.com.snn.apitest.repository.UserRepository;
+import br.com.snn.apitest.services.exception.ObjectNotFoundExeption;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,6 +26,7 @@ class UserServiceImplTest {
     public static final String EMAIL = "mina@ui.com";
     public static final double WEIGHT = 12.00;
     public static final String PASSWORD = "1200";
+    public static final String NOT_FOUND = "not found!";
     @InjectMocks
     private UserServiceImpl service;
     @Mock
@@ -59,6 +61,18 @@ class UserServiceImplTest {
         assertEquals(NAME,response.getName());
         assertEquals(WEIGHT,response.getWeight());
 
+    }
+    @Test
+    void objectNotFoundById(){
+        when(repository.findById(anyInt())).thenThrow(new ObjectNotFoundExeption(NOT_FOUND));
+
+        try{service.findById(ID);
+
+        }catch(Exception ex){
+            assertEquals(ObjectNotFoundExeption.class,ex.getClass());
+            assertEquals(NOT_FOUND,ex.getMessage());
+
+        }
     }
 
     @Test
