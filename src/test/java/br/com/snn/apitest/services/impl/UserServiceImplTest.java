@@ -30,6 +30,7 @@ class UserServiceImplTest {
     public static final String PASSWORD = "1200";
     public static final String NOT_FOUND = "not found!";
     public static final int INDEX = 0;
+    public static final String EMAIL_IS_REGISTRED = "This email is registred!";
     @InjectMocks
     private UserServiceImpl service;
     @Mock
@@ -116,7 +117,7 @@ class UserServiceImplTest {
             service.create(userDTO);
         }catch (Exception ex){
            assertEquals(DataIntegrityViolationException.class,ex.getClass());
-           assertEquals("This email is registred!",ex.getMessage());
+           assertEquals(EMAIL_IS_REGISTRED,ex.getMessage());
         }
 
     }
@@ -132,6 +133,19 @@ class UserServiceImplTest {
         assertEquals(ID,response.getId());
         assertEquals(NAME,response.getName());
         assertEquals(WEIGHT,response.getWeight());
+
+    }
+    @Test
+    void whenUpdateException() {
+        when(repository.findByEmail(anyString())).thenReturn(userOptional);
+
+        try{
+            userOptional.get().setId(2);
+            service.update(userDTO);
+        }catch (Exception ex){
+            assertEquals(DataIntegrityViolationException.class,ex.getClass());
+            assertEquals(EMAIL_IS_REGISTRED,ex.getMessage());
+        }
 
     }
 
