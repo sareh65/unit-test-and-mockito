@@ -10,7 +10,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -33,6 +37,7 @@ class UserResourceTest {
     public static final String EMAIL = "mina@ui.com";
     public static final double WEIGHT = 12.00;
     public static final String PASSWORD = "1200";
+    public static final int INDEX = 0;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -60,7 +65,23 @@ class UserResourceTest {
     }
 
     @Test
-    void findAll() {
+    void whenFindAllReturnList() {
+        when(service.findAll()).thenReturn(List.of(user));
+        when(mapper.map(any(),any())).thenReturn(userDTO);
+
+        ResponseEntity<List<UserDTO>> response = resource.findAll();
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals(ResponseEntity.class,response.getClass());
+        assertEquals(ArrayList.class,response.getBody().getClass());
+        assertEquals(UserDTO.class,response.getBody().get(INDEX).getClass());
+        assertEquals(ID,response.getBody().get(INDEX).getId());
+        assertEquals(EMAIL,response.getBody().get(INDEX).getEmail());
+        assertEquals(NAME,response.getBody().get(INDEX).getName());
+        assertEquals(WEIGHT,response.getBody().get(INDEX).getWeight());
+
     }
 
     @Test
