@@ -1,5 +1,6 @@
 package br.com.snn.apitest.resources.exception;
 
+import br.com.snn.apitest.services.exception.DataIntegrityViolationException;
 import br.com.snn.apitest.services.exception.ObjectNotFoundExeption;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class ResourceExceptionHandlerTest {
     public static final String NOT_FOUND = "not found!";
     public static final String OBJECT_NOT_FOUND = NOT_FOUND;
+    public static final String EMAIL_IS_REGISTRED = "This email is registred!";
     @InjectMocks
 private ResourceExceptionHandler resourceExceptionHandler;
     @BeforeEach
@@ -39,6 +41,16 @@ private ResourceExceptionHandler resourceExceptionHandler;
     }
 
     @Test
-    void dataIntegrityViolationException() {
+    void whenDataIntegrityViolationExceptionReturnResponseEntity() {
+        ResponseEntity<StandardError> response = resourceExceptionHandler
+                .dataIntegrityViolationException(new DataIntegrityViolationException(EMAIL_IS_REGISTRED), new MockHttpServletRequest());
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(ResponseEntity.class,response.getClass());
+        assertEquals(HttpStatus.BAD_REQUEST,response.getStatusCode());
+        assertEquals(StandardError.class,response.getBody().getClass());
+        assertEquals(400,response.getBody().getStatus());
+        assertEquals(EMAIL_IS_REGISTRED,response.getBody().getError());
     }
 }
