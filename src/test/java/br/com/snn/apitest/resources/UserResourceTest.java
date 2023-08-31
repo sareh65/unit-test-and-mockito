@@ -30,8 +30,8 @@ class UserResourceTest {
     private UserService service;
     @Mock
     private ModelMapper mapper;
-    private User user;
-    private UserDTO userDTO;
+    private User user =new User();
+    private UserDTO userDTO = new UserDTO();
     public static final Integer ID = 1;
     public static final String NAME = "mina";
     public static final String EMAIL = "mina@ui.com";
